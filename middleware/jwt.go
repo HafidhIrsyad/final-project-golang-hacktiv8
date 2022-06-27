@@ -9,21 +9,19 @@ import (
 )
 
 func GenerateToken(userId string) (string, error) {
-	/* Create a map to store our claims */
 	payload := jwt.MapClaims{}
-	/* Set token claims */
 	payload["id"] = userId
-	payload["exp"] = time.Now().Add(time.Hour * 144).Unix()
+	payload["exp"] = time.Now().Add(time.Hour * 200).Unix()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, payload)
 	signedToken, err := token.SignedString([]byte(os.Getenv("SECRET_KEY")))
+
 	if err != nil {
 		log.Fatal("Error in Generating key")
 		return signedToken, err
 	}
+
 	return signedToken, nil
 }
-
-//ParseToken parses a jwt token and returns the username in it is claims
 
 func ValidateToken(encodedToken string) (*jwt.Token, error) {
 	token, err := jwt.Parse(encodedToken, func(token *jwt.Token) (interface{}, error) {
@@ -34,8 +32,9 @@ func ValidateToken(encodedToken string) (*jwt.Token, error) {
 
 		return []byte(os.Getenv("SECRET_KEY")), nil
 	})
+
 	if err != nil {
-		return token, err
+		return nil, err
 	}
 
 	return token, nil

@@ -7,6 +7,7 @@ import (
 	"final-project/helper"
 	"final-project/repository"
 	"fmt"
+	"log"
 	"time"
 )
 
@@ -15,6 +16,7 @@ type UserServiceInterface interface {
 	Login(ctx context.Context, input entity.UserLogin) (*entity.User, error)
 	Update(ctx context.Context, id string, user entity.UserLogin) (*entity.User, error)
 	GetById(ctx context.Context, id string) (*entity.User, error)
+	Delete(ctx context.Context, id string) error
 }
 
 type UserService struct {
@@ -25,11 +27,24 @@ func NewUserService(userRepo repository.UserRepositoryInterface) UserServiceInte
 	return &UserService{userRepo: userRepo}
 }
 
+func (u UserService) Delete(ctx context.Context, id string) error {
+	//TODO implement me
+	err := u.userRepo.Delete(ctx, id)
+
+	if err != nil {
+		log.Fatal(err.Error())
+		return err
+	}
+
+	return nil
+}
+
 func (u UserService) Update(ctx context.Context, id string, user entity.UserLogin) (*entity.User, error) {
 	//TODO implement me
 	userId, errGetId := u.userRepo.GetById(ctx, id)
 
 	if errGetId != nil {
+		log.Fatalln(errGetId.Error())
 		return nil, errGetId
 	}
 
@@ -39,6 +54,7 @@ func (u UserService) Update(ctx context.Context, id string, user entity.UserLogi
 
 	updateUser, err := u.userRepo.Update(ctx, *userId)
 	if err != nil {
+		log.Fatalln(err.Error())
 		return nil, err
 	}
 

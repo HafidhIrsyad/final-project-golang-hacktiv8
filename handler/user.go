@@ -187,3 +187,26 @@ func (uh *UserHandler) GetById(writer http.ResponseWriter, req *http.Request) {
 	writer.WriteHeader(http.StatusOK)
 	writer.Write(response)
 }
+
+func (uh *UserHandler) Delete(writer http.ResponseWriter, req *http.Request) {
+	ctx := req.Context()
+	user := middleware.ForContext(ctx)
+
+	id := strconv.Itoa(user.ID)
+
+	err := uh.userService.Delete(ctx, id)
+
+	if err != nil {
+		response, _ := json.Marshal(helper.APIResponseFailed(err.Error(), http.StatusBadRequest, false))
+
+		writer.Header().Set("Content-Type", "application/json")
+		writer.WriteHeader(http.StatusBadRequest)
+		writer.Write(response)
+	}
+
+	response, _ := json.Marshal(helper.APIResponseSuccessWithoutData("your account has been successfully deleted"))
+
+	writer.Header().Set("Content-Type", "application/json")
+	writer.WriteHeader(http.StatusOK)
+	writer.Write(response)
+}

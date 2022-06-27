@@ -35,3 +35,9 @@ func APIResponseFailed(message string, code int, success bool) *Meta {
 
 	return &meta
 }
+
+func APIResponseSuccessWithoutData(message string) map[string]interface{} {
+	return map[string]interface{}{
+		"message": message,
+	}
+}

@@ -13,15 +13,33 @@ type UserRepositoryInterface interface {
 	Login(ctx context.Context, email string) (*entity.User, error)
 	Update(ctx context.Context, user entity.User) (*entity.User, error)
 	GetById(ctx context.Context, id string) (*entity.User, error)
+	Delete(ctx context.Context, id string) error
 }
 
 type UserRepository struct {
 	pgpool *pgxpool.Pool
 }
 
+func NewUserRepository(pgpool *pgxpool.Pool) UserRepositoryInterface {
+	return &UserRepository{pgpool: pgpool}
+}
+
+func (u UserRepository) Delete(ctx context.Context, id string) error {
+	//TODO implement me
+	sql := "delete from users where id=$1"
+
+	_, err := u.pgpool.Exec(ctx, sql, id)
+
+	if err != nil {
+		return err
+	}
+
+	return nil
+}
+
 func (u UserRepository) Update(ctx context.Context, user entity.User) (*entity.User, error) {
 	//TODO implement me
-	sql := "update users set email=$1, username=$ where id=$3"
+	sql := "update users set email=$1, username=$2 where id=$3"
 	_, err := u.pgpool.Exec(ctx, sql, user.Email, user.Username, user.ID)
 
 	if err != nil {
@@ -47,10 +65,6 @@ func (u UserRepository) GetById(ctx context.Context, id string) (*entity.User, e
 
 	return &user, nil
 
-}
-
-func NewUserRepository(pgpool *pgxpool.Pool) UserRepositoryInterface {
-	return &UserRepository{pgpool: pgpool}
 }
 
 func (u UserRepository) Login(ctx context.Context, email string) (*entity.User, error) {
