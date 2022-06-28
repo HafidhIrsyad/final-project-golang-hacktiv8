@@ -63,7 +63,7 @@ To get a local copy up and running, follow these simple example steps.
 ### Prerequisites
 
 This is an example of how to list things you need to use the software and how to install them.
-* Install Golang, Mysql, and Postman for testing
+* Install Golang, PostgreSQL, and Postman for testing
 * create an `.env` file
 
 ```bash
