@@ -5,7 +5,7 @@
 <h3 align="center">Final Project Golang Training by Hacktiv8</h3>
 
   <p align="center">
-    a MygRam App Golang REST API
+    a MyGram App Golang REST API
     <br />
     <br />
     <a href="https://github.com/HafidhIrsyad/final-project-golang-hacktiv8/issues">Report Bug</a>
