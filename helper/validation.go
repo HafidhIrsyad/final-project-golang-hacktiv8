@@ -9,11 +9,11 @@ func CheckEmpty(input ...interface{}) error {
 	for _, value := range input {
 		switch value {
 		case "":
-			return errors.New("make sure your input not empty")
+			return errors.New("make sure your input not empties")
 		case 0:
-			return errors.New("make sure your input not zero")
+			return errors.New("make sure your input not zeros")
 		case nil:
-			return errors.New("make sure your input not nil")
+			return errors.New("make sure your input not nils")
 		}
 	}
 
